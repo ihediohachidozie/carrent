@@ -187,29 +187,35 @@ class BookingController extends Controller
      */
     public function handleGatewayCallback()
     {
-        $msg = '';
+        $msg = $resp = '';
+        try {
+            $paymentDetails = Paystack::getPaymentData();
 
-        $paymentDetails = Paystack::getPaymentData();
-
-        $paymentRef = ($paymentDetails['data']['reference']);
-
-        $paymentStatus = $paymentDetails['data']['status'];
-
-        if ($paymentStatus == 'success') {
-
-            Transaction::where('reference', $paymentRef)
-                ->update(['status' => $paymentStatus]);
-
+            $paymentRef = ($paymentDetails['data']['reference']);
+    
+            $paymentStatus = $paymentDetails['data']['status'];
+    
+            if ($paymentStatus == 'success') {
+    
+                Transaction::where('reference', $paymentRef)
+                    ->update(['status' => $paymentStatus]);
+    
+                $resp = 'Vehicle Booking completed. Thank you for your patronge!';
+            } else {
+    
+                $currentTrans = Transaction::where('reference', $paymentRef)->get();
+    
+                Booking::where('transaction_id', $currentTrans->id)->delete();
+                Transaction::find($currentTrans->id)->delete();
+    
+                $resp = 'Vehicle Booking failed. Please try again!';
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
             $resp = 'Vehicle Booking completed. Thank you for your patronge!';
-        } else {
-
-            $currentTrans = Transaction::where('reference', $paymentRef)->get();
-
-            Booking::where('transaction_id', $currentTrans->id)->delete();
-            Transaction::find($currentTrans->id)->delete();
-
-            $resp = 'Vehicle Booking failed. Please try again!';
         }
+
+       
         return redirect('/')->withErrors([$msg => $resp]);;
     }
 }
