@@ -1,0 +1,1 @@
+{{ App\Models\Vehicle::find($booking->vehicle_id)->brand}} {{ ' '}} {{ App\Models\Vehicle::find($booking->vehicle_id)->model}}
