@@ -76,7 +76,7 @@
                                     </li>
                                 </ul>
                                 <div class="d-flex align-items-center bg-light p-3">
-                                    <span>$150/day</span>
+                                    <span>@money(30000)/day</span>
                                     <a href="#cars" class="ml-auto btn btn-primary">Rent Now</a>
                                 </div>
                             </div>
