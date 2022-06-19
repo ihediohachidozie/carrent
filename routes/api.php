@@ -24,6 +24,7 @@ Route::get('/booking/{id}/book', function($id){
     return Booking::find($id);
 });
 Route::post('/booking', [BookingController::class, 'store'])->name('store.transaction');
+
 Route::get('/vehicles', function() {
     return Vehicle::all();
 });

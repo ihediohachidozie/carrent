@@ -31,7 +31,7 @@ Route::post('/booking', [BookingController::class, 'store'])->name('store.transa
 // Laravel 8 paystack
 //Route::post('/pay', [App\Http\Controllers\PaymentController::class, 'redirectToGateway'])->name('pay');
 
-Route::get('/payment/callback', [BookingController::class, 'handleGatewayCallback']);
+Route::get('/payment/callback', [BookingController::class, 'handleGatewayCallback'])->name('callback');
 
 Route::get('/vehicles', [VehicleController::class, 'index'])->name('vehicle.index');
 Route::get('/vehicle/create', [VehicleController::class, 'create'])->name('vehicle.create');

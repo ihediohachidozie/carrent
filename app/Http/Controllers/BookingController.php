@@ -117,11 +117,15 @@ class BookingController extends Controller
 
             $ref = Str::random();
 
+            // url to go to after payment
+            $callback_url = route('callback');
+
             $url = "https://api.paystack.co/transaction/initialize";
             $fields = [
                 'email' => request()->email,
                 'amount' => $total,
-                'reference' => $ref
+                'reference' => $ref,
+                'callback_url' => $callback_url
 
             ];
             $fields_string = http_build_query($fields);
