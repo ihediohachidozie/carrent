@@ -98,7 +98,7 @@
                     @foreach($vehicles as $vehicle)
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="item-1">
-                            <a href="#"><img src="{{asset('assets/img/vehicles/'.$vehicle->img_url)}}" alt="Image" class="img-fluid"></a>
+                            <a href="#"><img src="{{asset('storage/'.$vehicle->img_url)}}" alt="Image" class="img-fluid"></a>
                             <div class="item-1-contents">
                                 <div class="text-center">
                                     <h3><a href="#">Range Rover S64 Coupe</a></h3>

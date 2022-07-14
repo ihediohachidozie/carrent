@@ -37,44 +37,48 @@ class VehicleController extends Controller
             'img_url' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
     }
-
-    public function validateDataNoImg()
-    {
-        # code...
-        return request()->validate([
-            'brand' => 'required',
-            'model' => 'sometimes',
-            'description' => 'sometimes',
-            'cost' => 'required',
-            //   'img_url' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-        ]);
-    }
+    
+    /**
+     * store vehicle function
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function store(Request $request)
     {
-
         $this->validateData();
 
-        $image = $request->file('img_url');
-        $imgName = time() . '.' . $image->extension();
-        $destinationPath = public_path('assets/img/vehicles/');
+        $vehicle = Vehicle::create([
+            'brand' => $request->brand,
+            'model' => $request->model,
+            'description' => $request->description,
+            'cost' => $request->cost,
 
-        $img = Image::make($image->path());
-        $img->resize(640, 428, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save($destinationPath . '/' . $imgName);
-
-
-        $vehicle = new Vehicle();
-
-        $vehicle->brand = $request->brand;
-        $vehicle->model = $request->model;
-        $vehicle->description = $request->description;
-        $vehicle->cost = $request->cost;
-        $vehicle->img_url = $imgName;
+        ]);
 
         $vehicle->save();
 
+        $this->storeImage($vehicle);
+
         return redirect()->route('vehicle.index');
+    }
+    
+    /**
+     * store Image function
+     *
+     * @param  mixed $vehicle
+     * @return void
+     */
+    public function storeImage($vehicle)
+    {
+        if(request()->has('img_url')){
+            $vehicle->update([
+                'img_url' => request()->img_url->store('assets/img/vehicles', 'public'),
+            ]);
+            $image = Image::make(public_path('storage/' . $vehicle->img_url))->fit(640, 428);
+            $image->save();
+        }
+
     }
 
     public function edit(Vehicle $vehicle)
@@ -82,37 +86,29 @@ class VehicleController extends Controller
 
         return view('vehicle.edit', compact('vehicle'));
     }
-
+    
+    /**
+     * update vehicle function
+     *
+     * @param  mixed $request
+     * @param  mixed $vehicle
+     * @return void
+     */
     public function update(Request $request, Vehicle $vehicle)
     {
-        $imgName = '';
-
-        if (request()->hasFile('img_url')) {
-            $this->validateData();
-
-            $image = $request->file('img_url');
-            $imgName = time() . '.' . $image->extension();
-            $destinationPath = public_path('assets/img/vehicles/');
-
-            $img = Image::make($image->path());
-            $img->resize(800, 500, function ($constraint) {
-                $constraint->aspectRatio();
-            })->save($destinationPath . '/' . $imgName);
-        } else {
-            $this->validateDataNoImg();
-            $imgName = $vehicle->img_url;
-        }
-
+        $this->validateData();
+        
         $status = $request->status ? 0 : 1; // out for maintenance or not
 
-        Vehicle::find($vehicle->id)->update([
+        $vehicle->update([
             'brand' => $request->brand,
             'model' => $request->model,
             'description' => $request->description,
             'cost' => $request->cost,
-            'status' => $status,
-            'img_url' => $imgName
+            'status' => $status
         ]);
+
+        $this->storeImage($vehicle);
 
         return redirect()->route('vehicle.index');
     }
