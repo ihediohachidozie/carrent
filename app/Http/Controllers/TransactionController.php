@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 
@@ -54,10 +55,12 @@ class TransactionController extends Controller
     public function show(Transaction $transaction)
     {
         # code...
-        $bookings = Transaction::find($transaction->id)->bookings;
+        $booking = Booking::with('transaction', 'vehicle')->where('transaction_id', $transaction->id)->get();
+        //Transaction::find($transaction->id)->bookings;
 
-        return view('transactions.bookings', compact('bookings'));
 
+        return view('transactions.bookings', compact('booking'));
+ 
     }
 
     /**

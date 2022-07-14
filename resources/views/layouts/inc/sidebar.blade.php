@@ -7,7 +7,7 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                     Dashboard
                 </a>
-               <!--  <div class="sb-sidenav-menu-heading">Interface</div>
+                <!--  <div class="sb-sidenav-menu-heading">Interface</div>
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                     <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                     Layouts
@@ -68,6 +68,18 @@
         <div class="sb-sidenav-footer">
             <div class="small">Logged in as:</div>
             {{auth()->user()->name}}
+        </div>
+        <div class="sb-sidenav-footer">
+            <div class="small"><a class="small underline-none" href="{{ route('logout') }}" onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();">
+                    Logout</a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+
+
+            </div>
+
         </div>
     </nav>
 </div>

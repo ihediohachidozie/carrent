@@ -37,21 +37,24 @@
                         </tfoot>
                         <tbody>
                             @if(count($dailybookings) > 0)
-                            @foreach($dailybookings as $booking)
+
+                            @for($i = 0; $i < count($dailybookings); $i++)
                             <tr>
-                                <td>{{$booking->id}}</td>
-                                <td>{{$booking->transaction_id}}</td>
-                                <td>@include('booking.vehicle')</td>
-                                <td>@include('booking.customer')</td>
-                                <!-- <td>{{$booking->vehicle->brand}} {{' '}} {{$booking->vehicle->model}}</td> -->
-                                <td>@include('booking.address')</td>
-                                <td>@include('booking.phone')</td>
+                                <td>{{$dailybookings[$i]->id}}</td>
+                                <td>{{$dailybookings[$i]->transaction->id}}</td>
+                                <td>{{$dailybookings[$i]->vehicle->brand}} {{' '}} {{$dailybookings[$i]->vehicle->model}} </td>
+                                <td>{{$dailybookings[$i]->transaction->firstname}}{{' '}}{{$dailybookings[$i]->transaction->lastname}}</td>
+                                <td>{{$dailybookings[$i]->transaction->address}}</td>
+                                <td>{{$dailybookings[$i]->transaction->phone}}</td>
+                                
                  
                                 
-
+  
                             </tr>
 
-                            @endforeach
+                            @endfor
+
+                          
                             @else
                             <tr>
                                 <td class="text-center" colspan="6"> No record found </td>

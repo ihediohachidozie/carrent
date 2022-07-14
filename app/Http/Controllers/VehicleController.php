@@ -34,7 +34,7 @@ class VehicleController extends Controller
             'model' => 'sometimes',
             'description' => 'sometimes',
             'cost' => 'required',
-            'img_url' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'img_url' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
     }
 

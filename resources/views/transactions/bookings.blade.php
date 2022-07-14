@@ -18,7 +18,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Transaction ID</th>
-                                <th>Vehicle</th>
+                                <th>Vehicle & Model</th>
                                 <th>Days Booked</th>
 
                             </tr>
@@ -27,27 +27,27 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Transaction ID</th>
-                                <th>Vehicle</th>
+                                <th>Vehicle & Model</th>
                                 <th>Days</th>
                             </tr>
                         </tfoot>
                         <tbody>
-                            @if(count($bookings) > 0)
-                            @foreach($bookings as $booking)
+                         
+                            @for($i = 0; $i < count($booking); $i++)
                             <tr>
-                                <td>{{$booking->id}}</td>
-                                <td>{{$booking->transaction->id}}</td>
+                                <td>{{$booking[$i]->id}}</td>
+                                <td>{{$booking[$i]->transaction->id}}</td>
                                 
-                                <td>{{$booking->vehicle->brand}} {{' '}} {{$booking->vehicle->model}}</td>
-                                <td>{{$booking->days}}</td>
+                                <td>{{$booking[$i]->vehicle->brand}} {{' '}} {{$booking[$i]->vehicle->model}} </td>
+                                <td>{{$booking[$i]->days}}</td>
                  
                                 
-
+  
                             </tr>
 
-                            @endforeach
-                            @else
-                            @endif
+                            @endfor
+                            
+                           
                         </tbody>
                     </table>
                 </div>
