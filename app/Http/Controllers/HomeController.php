@@ -31,7 +31,7 @@ class HomeController extends Controller
     {
         $date = date('Y-m-d');
 
-        $dailybookings = Booking::where('days', $date)->count();
+        $dailybookings = Booking::with('transaction', 'vehicle')->where('days', $date)->count();
        
         $ary = Transaction::select(DB::raw('sum(amount) as amount'), 'month')->groupBy('month')->orderBy('month_id', 'asc')->pluck('amount', 'month');
 
